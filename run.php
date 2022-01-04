@@ -43,10 +43,12 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
     $a = true;
     $b = 0;
     while ($a) {
-        if ($b > 7) {
+        if ($b > 8) {
             echo $vconomics->color('red', "\n[+]")." Bad email!\n";
             goto Start;
         }
+
+        sleep(2.5);
 
         $cek = $vconomics->curl('https://generator.email/', null, $xyz, true);
         
@@ -65,6 +67,9 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
     $headersOTP[] = 'Content-Type: application/json';
     $headersOTP[] = 'x-culture-code: EN';
     $headersOTP[] = 'x-location: ';
+
+    sleep(2);
+
     $ver = $vconomics->curl('https://id.vscore.vn/api-v1/tokens/verify-otp', '{"otp":"'.$otp.'","otpType":1,"validateToken":"'.$token.'"}', $headersOTP);
     
     if (strpos($ver[1], 'VERIFY_OTP_SUCCESS')) {
@@ -73,9 +78,6 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
     } else {
         echo $vconomics->color('red', "[+]")." Error: ".$ver[1]."\n";
     }
-
-    // Delay 1 Seconds
-    sleep(1);
 
     goto Start;
 } else {
