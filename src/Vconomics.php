@@ -15,7 +15,10 @@ class Vconomics{
         fclose($file);
     }
 
-    public function gendata($domain) {
+    public function gendata($domain, $jumlahAngka) {
+        // Set Variable
+        $angkaJumlah = intval($jumlahAngka);
+        // Nama Depan
         $firstName = array(
             'Wildan',
             'Michael',
@@ -40,9 +43,12 @@ class Vconomics{
             'Yohanes',
             'Advent',
             'Ega',
-            'Putri'
+            'Putri',
+            'Musa',
+            'Abi'
         );
 
+        // Nama Belakang
         $lastName = array(
             'Setiawan',
             'Septian',
@@ -57,7 +63,7 @@ class Vconomics{
             'Sudrajat',
             'Saputra',
             'Fachrizal',
-            'Manurung',
+            'Manuru',
             'Doni',
             'Lestari',
             'Ghifari',
@@ -71,18 +77,8 @@ class Vconomics{
         $indexLastname = array_rand($lastName);
         $angkaFull = '';
 
-        $arrayRandIndex = array(
-            rand(0,9),
-            rand(0,9),
-            rand(0,9),
-            rand(0,9),
-            rand(0,9),
-            rand(0,9),
-            rand(0,9)
-        );
-
-        for ($i=0; $i < count($arrayRandIndex); $i++) { 
-            $angkaFull .= $arrayRandIndex[$i];
+        for ($i=0; $i < $angkaJumlah; $i++) { 
+            $angkaFull .= rand(0,9);
         }
 
         $data = array(

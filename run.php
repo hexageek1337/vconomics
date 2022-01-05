@@ -6,11 +6,13 @@ $vconomics = new Vconomics();
 echo $vconomics->color('blue', "[+]")." Vconomics Bot - Gidhan B.A & Denny Septian\n";
 echo $vconomics->color('blue', "[+]")." Input Reff: ";
 $reff = trim(fgets(STDIN));
+echo $vconomics->color('blue', "[+]")." Input Jumlah Random Angka: ";
+$jumlahAngka = intval(trim(fgets(STDIN)));
 
 Start:
 $domain = 'honey.cloudns.ph';
 
-$base = $vconomics->gendata($domain);
+$base = $vconomics->gendata($domain, $jumlahAngka);
 
 $email = $base['email'];
 $pswd = 'Passku1010!!';
@@ -43,12 +45,12 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
     $a = true;
     $b = 0;
     while ($a) {
-        if ($b > 8) {
+        if ($b > 9) {
             echo $vconomics->color('red', "\n[+]")." Bad email!\n";
             goto Start;
         }
 
-        sleep(2.5);
+        sleep(3);
 
         $cek = $vconomics->curl('https://generator.email/', null, $xyz, true);
         
