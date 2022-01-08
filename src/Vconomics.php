@@ -16,16 +16,16 @@ class Vconomics{
     }
 
     public function gendata($domains = null, $jumlahAngka) {
-        $domainArr = array(
-            'honey.cloudns.ph',
-            'honey.cloudns.asia'
-        );
-        
         if ($domains === null) {
-            $domain = $domainArr[0];
+            $domain = 'honey.cloudns.ph';
         } elseif ($domains === 'random') {
-            $domainIndex = array_rand($domainArr);
-            $domain = $domainArr[$domainIndex];
+            $domain = $this->get_between_array(file_get_contents("https://generator.email/"), 'onclick="change_dropdown_list(this.innerHTML)" id="', '" style="');
+            $domainIndex = array_rand($domain);
+            $domain = $domain[$domainIndex];
+        } elseif ($domains != null AND $domains != 'random') {
+            $domain = strtolower(addslashes($domains));
+        } else {
+            $domain = 'honey.cloudns.ph';
         }
 
         // Set Variable
