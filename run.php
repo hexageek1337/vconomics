@@ -10,9 +10,7 @@ echo $vconomics->color('blue', "[+]")." Input Jumlah Random Angka: ";
 $jumlahAngka = intval(trim(fgets(STDIN)));
 
 Start:
-$domain = 'honey.cloudns.ph';
-
-$base = $vconomics->gendata($domain, $jumlahAngka);
+$base = $vconomics->gendata(null, $jumlahAngka);
 
 $email = $base['email'];
 $pswd = 'Passku1010!!';
@@ -30,9 +28,7 @@ $reg = $vconomics->curl('https://id.vscore.vn/api-v1/accounts/register/4', '{"fr
 if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
     // Delay 1,2 Seconds
     sleep(1.2);
-    $vconomics->generateResult($email, $pswd, 'result_noverify.txt');
-    
-    $token = json_decode($reg[1])->data->token;
+
     echo $vconomics->color('green', "[+]")." Registration successfuly!\n";
     echo $vconomics->color('yellow', "[+]")." Checking email";
 
@@ -55,6 +51,9 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
         $cek = $vconomics->curl('https://generator.email/', null, $xyz, true);
         
         if (strpos($cek[1], 'Vconomics')) {
+            // Save Result with No Verify
+            $vconomics->generateResult($email, $pswd, 'result_noverify.txt');
+            // GET OTP
             $otp = $vconomics->get_between($cek[1], '"color: #fa7800; font-weight: bold; text-align: center; font-size: 40px">', "</p>");
             echo $vconomics->color('green', " [$otp]\n");
             $a = false;
@@ -62,23 +61,6 @@ if (strpos($reg[1], 'REGISTER_SUCCESSFUL_NEED_CONFIRM')) {
             echo ".";
             $b++;
         }
-    }
-
-    $headersOTP = array();
-    $headersOTP[] = 'User-Agent: okhttp/3.12.1';
-    $headersOTP[] = 'Content-Type: application/json';
-    $headersOTP[] = 'x-culture-code: EN';
-    $headersOTP[] = 'x-location: ';
-
-    sleep(2);
-
-    $ver = $vconomics->curl('https://id.vscore.vn/api-v1/tokens/verify-otp', '{"otp":"'.$otp.'","otpType":1,"validateToken":"'.$token.'"}', $headersOTP);
-    
-    if (strpos($ver[1], 'VERIFY_OTP_SUCCESS')) {
-        $vconomics->generateResult($email, $pswd, 'result.txt');
-        echo $vconomics->color('green', "[+]")." Verification successfuly!\n";
-    } else {
-        echo $vconomics->color('red', "[+]")." Error: ".$ver[1]."\n";
     }
 
     goto Start;
