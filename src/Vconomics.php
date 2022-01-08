@@ -57,7 +57,9 @@ class Vconomics{
             'Ega',
             'Putri',
             'Musa',
-            'Abi'
+            'Abi',
+            'Rasya',
+            'Wisnu'
         );
 
         // Nama Belakang
@@ -82,7 +84,9 @@ class Vconomics{
             'Firmansyah',
             'Ardiansyah',
             'Giovani',
-            'Gionino'
+            'Gionino',
+            'Mako',
+            'Fatma'
         );
 
         $indexFirstname = array_rand($firstName);
