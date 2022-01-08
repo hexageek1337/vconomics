@@ -15,7 +15,19 @@ class Vconomics{
         fclose($file);
     }
 
-    public function gendata($domain, $jumlahAngka) {
+    public function gendata($domains = null, $jumlahAngka) {
+        $domainArr = array(
+            'honey.cloudns.ph',
+            'honey.cloudns.asia'
+        );
+        
+        if ($domains === null) {
+            $domain = $domainArr[0];
+        } elseif ($domains === 'random') {
+            $domainIndex = array_rand($domainArr);
+            $domain = $domainArr[$domainIndex];
+        }
+
         // Set Variable
         $angkaJumlah = intval($jumlahAngka);
         // Nama Depan
