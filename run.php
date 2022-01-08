@@ -10,7 +10,7 @@ echo $vconomics->color('blue', "[+]")." Input Jumlah Random Angka: ";
 $jumlahAngka = intval(trim(fgets(STDIN)));
 
 Start:
-$base = $vconomics->gendata(null, $jumlahAngka);
+$base = $vconomics->gendata('random', $jumlahAngka);
 
 $email = $base['email'];
 $pswd = 'Passku1010!!';
