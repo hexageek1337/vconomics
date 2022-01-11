@@ -15,15 +15,17 @@ class Vconomics{
         fclose($file);
     }
 
-    public function gendata($domains = null, $jumlahAngka) {
+    public function gendata($domains = null, $jumlahAngka = 0, $usernameGmail = null, $indexDomain = 0) {
         if ($domains === null) {
             $domain = 'honey.cloudns.ph';
         } elseif ($domains === 'random') {
             $domain = $this->get_between_array(file_get_contents("https://generator.email/"), 'onclick="change_dropdown_list(this.innerHTML)" id="', '" style="');
             $domainIndex = array_rand($domain);
             $domain = $domain[$domainIndex];
-        } elseif ($domains != null AND $domains != 'random') {
-            $domain = strtolower(addslashes($domains));
+        } elseif ($domains === 'gmail') {
+            $arrDomain = $this->dotGmail($usernameGmail);
+
+            $domain = $arrDomain[$indexDomain];
         } else {
             $domain = 'honey.cloudns.ph';
         }
@@ -97,13 +99,39 @@ class Vconomics{
             $angkaFull .= rand(0,9);
         }
 
-        $data = array(
-            'email' => strtolower($firstName[$indexFirstname].$lastName[$indexLastname].$angkaFull.'@'.$domain),
-            'firstname' => $firstName[$indexFirstname],
-            'lastname' => $lastName[$indexLastname]
-        );
+        if ($domains != 'gmail') {
+            $data = array(
+                'email' => strtolower($firstName[$indexFirstname].$lastName[$indexLastname].$angkaFull.'@'.$domain),
+                'firstname' => $firstName[$indexFirstname],
+                'lastname' => $lastName[$indexLastname]
+            );
+        } elseif ($domains === 'gmail') {
+            $data = array(
+                'dotMail' => count($arrDomain),
+                'email' => $domain.'@gmail.com',
+                'firstname' => $firstName[$indexFirstname],
+                'lastname' => $lastName[$indexLastname]
+            );
+        }
 
         return $data;
+    }
+
+    public function dotGmail($username){
+        if ((strlen($username) > 1) && (strlen($username) < 35)) {
+            $ca = preg_split("//",$username);
+            array_shift($ca);
+            array_pop($ca);
+            $head = array_shift($ca);
+            $res = $this->dotGmail(join('',$ca));
+            $result = array();
+            foreach($res as $val){
+                $result[] = $head . $val;
+                $result[] = $head . '.' .$val;
+            }
+            return $result;
+        }
+        return array($username);
     }
 
     public function randomAgent(){
@@ -112,6 +140,7 @@ class Vconomics{
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36 Edg/96.0.1054.62',
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
+            'Mozilla/5.0 (Linux; Android 7.1.2; G011A Build/N2G48H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.158 Mobile Safari/537.36'
         );
 
         $indexArray = array_rand($dataArray);
@@ -140,9 +169,9 @@ class Vconomics{
             $cookies = array_merge($cookies, $cookie);
         }
         return array(
-            $header,
-            $body,
-            $cookies
+            'header' => $header,
+            'body' => $body,
+            'cookies' => $cookies
         );
     }
 
